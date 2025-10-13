@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MediCare Pharmacy - Cart</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-mortar-pestle"></i>
+            <h1>MediCare Pharmacy</h1>
+          </div>
+          <nav>
+            <ul>
+              <li><a href="/medicines">Home</a></li>
+              <li><a href="/cart">Cart</a></li>
+              <li><a href="/categories">Categories</a></li>
+              <li><a href="/prescriptions">Prescriptions</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </nav>
+          <div class="user-actions">
+            <div class="user">
+              <i class="fas fa-user-circle"></i>
+              <span><%= user.name %></span>
+            </div>
+            <div class="cart-icon">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count"
+                ><%= cart.reduce((total, item) => total + item.quantity, 0)
+                %></span
+              >
+            </div>
+            <a href="/logout" style="color: white; text-decoration: none"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="welcome-message">
+        <h2>Your Shopping Cart, <%= user.name %>!</h2>
+        <p>Review your selected medicines and proceed to checkout.</p>
+      </div>
+
+      <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+      <% } %> <% if (cart.length === 0) { %>
+      <div class="empty-cart">
+        <i class="fas fa-shopping-cart"></i>
+        <h2>Your cart is empty</h2>
+        <p>Add some medicines to get started!</p>
+        <a href="/medicines">Continue Shopping</a>
+      </div>
+      <% } else { %>
+      <div class="cart-grid">
+        <% cart.forEach(item => { %>
+        <div class="cart-card">
+          <div class="cart-image">
+            <i class="fas fa-pills"></i>
+          </div>
+          <div class="cart-info">
+            <h3><%= item.name %></h3>
+            <p>Price: Ksh <%= item.price %></p>
+            <div class="cart-price">
+              Total: Ksh <%= (item.price * item.quantity).toFixed(2) %>
+            </div>
+            <div class="cart-actions">
+              <form
+                action="/update-cart"
+                method="POST"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <input
+                  type="hidden"
+                  name="medicine_id"
+                  value="<%= item.medicine_id %>"
+                />
+                <div class="quantity-controls">
+                  <input
+                    type="number"
+                    name="quantity"
+                    value="<%= item.quantity %>"
+                    min="1"
+                    onchange="this.form.submit()"
+                  />
+                </div>
+              </form>
+              <form action="/remove-from-cart" method="POST" style="margin: 0">
+                <input
+                  type="hidden"
+                  name="medicine_id"
+                  value="<%= item.medicine_id %>"
+                />
+                <button type="submit" class="remove-btn">Remove</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+
+      <div class="cart-summary">
+        <h2>Order Summary</h2>
+        <% cart.forEach(item => { %>
+        <div class="summary-item">
+          <span><%= item.name %> (x<%= item.quantity %>)</span>
+          <span>Ksh <%= (item.price * item.quantity).toFixed(2) %></span>
+        </div>
+        <% }); %>
+        <div class="summary-item total">
+          <span>Total</span>
+          <span>Ksh <%= total.toFixed(2) %></span>
+        </div>
+        <form action="/place-order" method="POST" style="margin-top: 20px">
+          <button type="submit" class="checkout-btn">Place Order</button>
+        </form>
+      </div>
+      <% } %>
+    </div>
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <p>
+            © <%= new Date().getFullYear() %> BelCare Pharmacy. All rights
+            reserved.
+          </p>
+          <div class="footer-links">
+            <a href="/contact">Contact</a>
+            <a href="/categories">Categories</a>
+            <a href="/prescriptions">Prescriptions</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function changeQuantity(medicineId, change) {
+        const form = document
+          .querySelector(
+            `form[action="/update-cart"] input[name="medicine_id"][value="${medicineId}"]`
+          )
+          .closest("form");
+        const input = form.querySelector('input[name="quantity"]');
+        const currentValue = parseInt(input.value);
+        const newValue = currentValue + change;
+        if (newValue > 0) {
+          input.value = newValue;
+          form.submit();
+        }
+      }
+
+      function proceedToCheckout() {
+        // For now, just redirect to a placeholder page
+        alert("Checkout functionality will be implemented next!");
+        // window.location.href = '/checkout';
+      }
+    </script>
+  </body>
+</html>

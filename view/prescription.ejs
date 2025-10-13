@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BelCare Pharmacy - Prescriptions</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-mortar-pestle"></i>
+            <h1>BelCare Pharmacy</h1>
+          </div>
+          <nav>
+            <ul>
+              <li><a href="/medicines">Home</a></li>
+              <li><a href="/medicines">Medicines</a></li>
+              <li><a href="/categories">Categories</a></li>
+              <li><a href="/prescriptions">Prescriptions</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </nav>
+          <div class="user-actions">
+            <div class="user">
+              <i class="fas fa-user-circle"></i>
+              <span><%= user.name %></span>
+            </div>
+            <div class="cart-icon">
+              <a href="/cart" style="color: white; text-decoration: none">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count"><%= cartCount %></span>
+              </a>
+            </div>
+            <a href="/logout" style="color: white; text-decoration: none"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="welcome-message">
+        <h2>Prescription Upload</h2>
+        <p>Upload your prescription for pharmacist review and assistance.</p>
+      </div>
+
+      <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+      <% } %> <% if (success) { %>
+      <div class="alert alert-success"><%= success %></div>
+      <% } %>
+
+      <div class="form-container" style="max-width: 600px; margin: 0 auto">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="rxFile">Prescription Image or PDF</label>
+            <input
+              type="file"
+              id="rxFile"
+              name="myfile"
+              accept="image/*,.pdf"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="notes">Notes (optional)</label>
+            <textarea
+              id="notes"
+              name="notes"
+              rows="4"
+              placeholder="Any instructions for the pharmacist..."
+            ></textarea>
+          </div>
+          <button type="submit" class="btn">Upload Prescription</button>
+        </form>
+      </div>
+
+      <div class="welcome-message" style="margin-top: 30px">
+        <h3>How it works</h3>
+        <ul>
+          <li>Upload a clear image or PDF of your doctor's prescription.</li>
+          <li>Our pharmacist reviews it and contacts you if needed.</li>
+          <li>Approved items will be added to your cart for checkout.</li>
+        </ul>
+      </div>
+    </div>
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <p>
+            © <%= new Date().getFullYear() %> BelCare Pharmacy. All rights
+            reserved.
+          </p>
+          <div class="footer-links">
+            <a href="/contact">Contact</a>
+            <a href="/categories">Categories</a>
+            <a href="/prescriptions">Prescriptions</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

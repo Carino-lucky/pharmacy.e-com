@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BelCare Pharmacy - Medicines</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-mortar-pestle"></i>
+            <h1>BelCare Pharmacy</h1>
+          </div>
+          <nav>
+            <ul>
+              <li><a href="/medicines">Home</a></li>
+              <li><a href="/medicines">Medicines</a></li>
+              <li><a href="/categories">Categories</a></li>
+              <li><a href="/prescriptions">Prescriptions</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </nav>
+          <div class="user-actions">
+            <div class="user">
+              <i class="fas fa-user-circle"></i>
+              <span><%= user.name %></span>
+            </div>
+            <div class="cart-icon">
+              <a href="/cart" style="color: white; text-decoration: none">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count"><%= cartCount %></span>
+              </a>
+            </div>
+            <a href="/logout" style="color: white; text-decoration: none"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="welcome-message">
+        <h2>Welcome to BelCare Pharmacy, <%= user.name %>!</h2>
+        <p>
+          Browse our wide selection of medicines and health products. Add items
+          to your cart and place your order with confidence.
+        </p>
+      </div>
+
+      <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+      <% } %>
+
+      <div class="medicine-grid">
+        <% medicines.forEach(medicine => { %>
+        <div class="medicine-card">
+          <div class="medicine-image">
+            <i class="fas fa-pills"></i>
+          </div>
+          <div class="medicine-info">
+            <h3><%= medicine.name %></h3>
+            <p><%= medicine.description %></p>
+            <div class="medicine-price">Ksh <%= medicine.price %></div>
+
+            <% if (medicine.prescription_required) { %>
+            <span class="prescription-badge rx-required">Rx Required</span>
+            <% } else { %>
+            <span class="prescription-badge no-rx">No Rx</span>
+            <% } %>
+
+            <div class="medicine-actions">
+              <form action="/add-to-cart" method="POST">
+                <input
+                  type="hidden"
+                  name="medicine_id"
+                  value="<%= medicine.medicine_id %>"
+                />
+                <input
+                  type="number"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  max="<%= medicine.stock %>"
+                />
+                <button type="submit" class="btn">Add to Cart</button>
+              </form>
+            </div>
+
+            <div style="margin-top: 10px; font-size: 12px; color: #666">
+              Stock: <%= medicine.stock %> units
+            </div>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+
+      <% if (medicines.length === 0) { %>
+      <div class="empty-cart">
+        <i
+          class="fas fa-exclamation-triangle"
+          style="font-size: 48px; color: var(--warning); margin-bottom: 20px"
+        ></i>
+        <h3>No medicines available</h3>
+        <p>Please check back later or contact our support team.</p>
+      </div>
+      <% } %>
+    </div>
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <p>
+            © <%= new Date().getFullYear() %> BelCare Pharmacy. All rights
+            reserved.
+          </p>
+          <div class="footer-links">
+            <a href="/contact">Contact</a>
+            <a href="/categories">Categories</a>
+            <a href="/prescriptions">Prescriptions</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

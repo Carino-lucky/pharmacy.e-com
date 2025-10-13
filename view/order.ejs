@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BelCare Pharmacy - Order Confirmation</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-mortar-pestle"></i>
+            <h1>BelCare Pharmacy</h1>
+          </div>
+          <div class="user-actions">
+            <div class="user">
+              <i class="fas fa-user-circle"></i>
+              <span><%= user.name %></span>
+            </div>
+            <a href="/logout" style="color: white; text-decoration: none"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="order-confirmation">
+        <i class="fas fa-check-circle"></i>
+        <h2>Order Confirmed!</h2>
+        <p>
+          Thank you for your order, <%= user.name %>. Your order has been
+          successfully placed.
+        </p>
+        <p>Order ID: <strong>#<%= order.order_id %></strong></p>
+      </div>
+
+      <div class="order-details">
+        <h3>Order Details</h3>
+
+        <div class="order-info">
+          <div class="info-item">
+            <span class="info-label">Order ID:</span>
+            <span class="info-value">#<%= order.order_id %></span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Order Date:</span>
+            <span class="info-value"
+              ><%= new Date(order.created_at).toLocaleDateString() %></span
+            >
+          </div>
+          <div class="info-item">
+            <span class="info-label">Status:</span>
+            <span class="info-value">
+              <span class="order-status status-<%= order.status %>"
+                ><%= order.status %></span
+              >
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Payment Status:</span>
+            <span class="info-value"
+              ><%= order.payment_status || 'Pending' %></span
+            >
+          </div>
+        </div>
+
+        <h3>Order Items</h3>
+        <div class="order-items">
+          <% orderItems.forEach(item => { %>
+          <div class="order-item">
+            <div class="item-info">
+              <h4><%= item.name %></h4>
+              <p>Medicine ID: <%= item.medicine_id %></p>
+            </div>
+            <div class="item-quantity">Qty: <%= item.quantity %></div>
+            <div class="item-price">
+              Ksh <%= (item.price * item.quantity).toFixed(2) %>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+
+        <div class="order-total">
+          <div class="total-amount">
+            Total: Ksh <%= order.total_price.toFixed(2) %>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a href="/medicines" class="back-to-shop">
+          <i class="fas fa-arrow-left"></i> Continue Shopping
+        </a>
+      </div>
+    </div>
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <p>
+            © <%= new Date().getFullYear() %> BelCare Pharmacy. All rights
+            reserved.
+          </p>
+          <div class="footer-links">
+            <a href="/contact">Contact</a>
+            <a href="/categories">Categories</a>
+            <a href="/prescriptions">Prescriptions</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

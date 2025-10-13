@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BelCare Pharmacy - Register</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <i class="fas fa-mortar-pestle"></i>
+          <h1>BelCare Pharmacy</h1>
+        </div>
+        <p>Create an account to start shopping</p>
+      </div>
+
+      <div class="form-container">
+        <div class="tabs">
+          <div class="tab" data-tab="login">Login</div>
+          <div class="tab active" data-tab="register">Register</div>
+        </div>
+
+        <% if (error) { %>
+        <div class="alert alert-error"><%= error %></div>
+        <% } %> <% if (success) { %>
+        <div class="alert alert-success"><%= success %></div>
+        <% } %>
+
+        <form id="loginForm" class="form" action="/login" method="POST">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn">Login</button>
+          <div class="forgot-password">
+            <a href="#">Forgot Password?</a>
+          </div>
+        </form>
+
+        <form
+          id="registerForm"
+          class="form active"
+          action="/register"
+          method="POST"
+        >
+          <div class="form-group">
+            <label for="registerName">Full Name</label>
+            <input type="text" id="registerName" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="registerPhone">Phone Number</label>
+            <input type="tel" id="registerPhone" name="phone" required />
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Password</label>
+            <input
+              type="password"
+              id="registerPassword"
+              name="password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerConfirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="registerConfirmPassword"
+              name="confirmPassword"
+              required
+            />
+          </div>
+          <button type="submit" class="btn">Create Account</button>
+        </form>
+
+        <div class="social-login">
+          <p>Or login with</p>
+          <div class="social-icons">
+            <div class="social-icon facebook">
+              <i class="fab fa-facebook-f"></i>
+            </div>
+            <div class="social-icon google">
+              <i class="fab fa-google"></i>
+            </div>
+            <div class="social-icon twitter">
+              <i class="fab fa-twitter"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tab switching functionality
+      const tabs = document.querySelectorAll(".tab");
+      const forms = document.querySelectorAll(".form");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const tabName = tab.getAttribute("data-tab");
+
+          // Update active tab
+          tabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+
+          // Show corresponding form
+          forms.forEach((form) => {
+            form.classList.remove("active");
+            if (form.id === `${tabName}Form`) {
+              form.classList.add("active");
+            }
+          });
+
+          // Clear alert when switching tabs
+          const alertBox = document.getElementById("alertBox");
+          alertBox.style.display = "none";
+          alertBox.className = "alert";
+        });
+      });
+
+      // Form validation
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+      const alertBox = document.getElementById("alertBox");
+
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        if (!email || !password) {
+          showAlert("Please fill in all fields", "error");
+          return;
+        }
+
+        // Submit the form
+        this.submit();
+      });
+
+      registerForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const name = document.getElementById("registerName").value;
+        const email = document.getElementById("registerEmail").value;
+        const phone = document.getElementById("registerPhone").value;
+        const password = document.getElementById("registerPassword").value;
+        const confirmPassword = document.getElementById(
+          "registerConfirmPassword"
+        ).value;
+
+        if (!name || !email || !phone || !password || !confirmPassword) {
+          showAlert("Please fill in all fields", "error");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showAlert("Passwords do not match", "error");
+          return;
+        }
+
+        // Submit the form
+        this.submit();
+      });
+
+      function showAlert(message, type) {
+        alertBox.textContent = message;
+        alertBox.className = `alert alert-${type}`;
+        alertBox.style.display = "block";
+
+        // Hide alert after 5 seconds
+        setTimeout(() => {
+          alertBox.style.display = "none";
+        }, 5000);
+      }
+    </script>
+  </body>
+</html>
