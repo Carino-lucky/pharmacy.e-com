@@ -525,6 +525,9 @@ app.get("/order-confirmation/:orderId", requireAuth, (req, res) => {
     });
   });
 });
+app.get("/old-page", (req, res) => {
+  res.redirect(301, "/new-page");
+});
 
 // Start server
 app.listen(port, () => {
