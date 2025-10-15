@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belcare pharmacy</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary: #2a7de1;
+        --secondary: #3bb4b4;
+        --accent: #ff6b6b;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 400px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .logo i {
+        font-size: 32px;
+      }
+
+      .logo h1 {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .header p {
+        opacity: 0.9;
+      }
+
+      .form-container {
+        padding: 20px;
+      }
+
+      .tabs {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .tab {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 600;
+      }
+
+      .tab.active {
+        color: var(--primary);
+        border-bottom: 2px solid var(--primary);
+      }
+
+      .form {
+        display: none;
+      }
+
+      .form.active {
+        display: block;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: border 0.3s;
+      }
+
+      .form-group input:focus {
+        border-color: var(--primary);
+        outline: none;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        transition: background 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #1c68d8;
+      }
+
+      .forgot-password {
+        text-align: right;
+        margin-top: 10px;
+      }
+
+      .forgot-password a {
+        color: var(--primary);
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .social-login {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .social-login p {
+        margin-bottom: 10px;
+        position: relative;
+        color: #777;
+      }
+
+      .social-login p::before,
+      .social-login p::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background: #ddd;
+      }
+
+      .social-login p::before {
+        left: 0;
+      }
+
+      .social-login p::after {
+        right: 0;
+      }
+
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .social-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .facebook {
+        background: #3b5998;
+      }
+
+      .google {
+        background: #dd4b39;
+      }
+
+      .twitter {
+        background: #1da1f2;
+      }
+
+      .alert {
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        display: none;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          box-shadow: none;
+        }
+
+        body {
+          padding: 10px;
+          background: white;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <i class="fas fa-mortar-pestle"></i>
+          <h1>Belcare pharmacy</h1>
+        </div>
+        <p>Login or create an account to continue</p>
+      </div>
+
+      <div class="form-container">
+        <div class="tabs">
+          <div class="tab active" data-tab="login">Login</div>
+          <div class="tab" data-tab="register">Register</div>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <form id="loginForm" class="form active" action="/login" method="POST">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn">Login</button>
+          <div class="forgot-password">
+            <a href="#">Forgot Password?</a>
+          </div>
+        </form>
+
+        <form id="registerForm" class="form" action="/register" method="POST">
+          <div class="form-group">
+            <label for="registerName">Full Name</label>
+            <input type="text" id="registerName" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="registerPhone">Phone Number</label>
+            <input type="tel" id="registerPhone" name="phone" required />
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Password</label>
+            <input
+              type="password"
+              id="registerPassword"
+              name="password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerConfirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="registerConfirmPassword"
+              name="confirmPassword"
+              required
+            />
+          </div>
+          <button type="submit" class="btn">Create Account</button>
+        </form>
+
+        <div class="social-login">
+          <p>Or login with</p>
+          <div class="social-icons">
+            <div class="social-icon facebook">
+              <i class="fab fa-facebook-f"></i>
+            </div>
+            <div class="social-icon google">
+              <i class="fab fa-google"></i>
+            </div>
+            <div class="social-icon twitter">
+              <i class="fab fa-twitter"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tab switching functionality
+      const tabs = document.querySelectorAll(".tab");
+      const forms = document.querySelectorAll(".form");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const tabName = tab.getAttribute("data-tab");
+
+          // Update active tab
+          tabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+
+          // Show corresponding form
+          forms.forEach((form) => {
+            form.classList.remove("active");
+            if (form.id === `${tabName}Form`) {
+              form.classList.add("active");
+            }
+          });
+
+          // Clear alert when switching tabs
+          const alertBox = document.getElementById("alertBox");
+          alertBox.style.display = "none";
+          alertBox.className = "alert";
+        });
+      });
+
+      // Form validation
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+      const alertBox = document.getElementById("alertBox");
+
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        if (!email || !password) {
+          showAlert("Please fill in all fields", "error");
+          return;
+        }
+
+        // Simulate successful login
+        showAlert("Login successful! Redirecting...", "success");
+        setTimeout(() => {
+          window.location.href = "/medicines";
+        }, 1500);
+      });
+
+      registerForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const name = document.getElementById("registerName").value;
+        const email = document.getElementById("registerEmail").value;
+        const phone = document.getElementById("registerPhone").value;
+        const password = document.getElementById("registerPassword").value;
+        const confirmPassword = document.getElementById(
+          "registerConfirmPassword"
+        ).value;
+
+        if (!name || !email || !phone || !password || !confirmPassword) {
+          showAlert("Please fill in all fields", "error");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showAlert("Passwords do not match", "error");
+          return;
+        }
+
+        // Simulate successful registration
+        showAlert("Registration successful! You can now login.", "success");
+
+        // Switch to login tab after successful registration
+        setTimeout(() => {
+          document.querySelector('[data-tab="login"]').click();
+          registerForm.reset();
+        }, 1500);
+      });
+
+      function showAlert(message, type) {
+        alertBox.textContent = message;
+        alertBox.className = `alert alert-${type}`;
+        alertBox.style.display = "block";
+
+        // Hide alert after 5 seconds
+        setTimeout(() => {
+          alertBox.style.display = "none";
+        }, 5000);
+      }
+    </script>
+  </body>
+</html>
